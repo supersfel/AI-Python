@@ -14,7 +14,7 @@ N,Xmin,Xmax = len(X), min(X),max(X)
 def Gaussian_linear(K):
     sigma = Xmax - Xmin / ( K - 1 )
     U = sigma * np.arange(K) + Xmin
-    U = U
+
     Gaussian_func=[]
     for Xn in X:
         tmp = []
