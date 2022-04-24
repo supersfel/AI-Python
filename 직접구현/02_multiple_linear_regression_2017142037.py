@@ -82,7 +82,7 @@ def Gradient_Descent(lr,Gradient_W,epoch):    #경사하강법 함수 learning r
     print('END MSE_Gradient_Descent :', MSE_Gradient_Descent)   #학습 종료시 MSE출력
     return Gradient_W
 
-Gradient_W = Gradient_Descent(lr=0.00001,Gradient_W=[1,2,-5],epoch=10000)   #넣어준 값들로 학습시킨 후 Gradient_W에 저장
+Gradient_W = Gradient_Descent(lr=0.000055,Gradient_W=[100,100,0],epoch=5000000)   #넣어준 값들로 학습시킨 후 Gradient_W에 저장
 
 print('----------------')
 print('W0 =',Gradient_W[0],'W1 =',Gradient_W[1],'W2 =',Gradient_W[2])  #학습 완료 후 W값들 출력
