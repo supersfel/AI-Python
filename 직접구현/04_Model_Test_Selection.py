@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 raw_data = pd.read_csv('lin_regression_data_03.csv', names=['age', 'tall'])
 X = np.asarray(raw_data['age'].values.tolist())  # 나이 데이터(X)
 Y = np.asarray(raw_data['tall'].values.tolist())  # 키 데이터(Y)
+min_Xdata,max_Xdata = min(X),max(X)
 
 plt.scatter(X, Y,label="infant's age and height data")  # 데이터 위치를 점으로 표시
 plt.xlabel('age[month]')
@@ -51,11 +52,11 @@ def Gaussian_linear(K,X,Y,test_x,test_y):  # 가우스 함수를 이용한 선�
     test_data = np.array(test_data)  # 위와 같은작업 반복
     test_data = test_data.T  # 저장된 값들이 행이아닌 열기준으로 함수가 저장되기에 전치행렬을 해줌
     test_data = np.c_[test_data, np.ones(len(test_x))]  # 예측값 계산을 위해 뒤에 1인 배열을 붙여줌
-    Test_Set_MSE_Gaussian_Solution = np.mean((test_data @ Gaussian_W - test_y) ** 2)  # 테스트집합의 MSE계산
+    Test_Set_MSE_Gaussian_Solution = np.mean((test_data @ Gaussian_W - test_y) ** 2)**0.5  # 테스트집합의 MSE계산
     Test_MSEs.append(Test_Set_MSE_Gaussian_Solution)
 
     Gaussian_func_data = []  # 예측값들을 무작위로 보기위한 데이터들
-    X_data = np.linspace(Xmin, Xmax, 1000)
+    X_data = np.linspace(min_Xdata, max_Xdata, 1000)
     for Uk in U:
         Gaussian_func_data.append(np.exp(-0.5 * ((X_data - Uk) / sigma) ** 2))  # 위와 같은작업 반복
 
@@ -116,7 +117,9 @@ for i in range(5):
     plt.subplot(plot_order)
     plot_order+=1
     plt.grid(True, linestyle='--')
-    plt.scatter(X, Y, color='green', label='original')  # 데이터 위치를 점으로 표시
+    plt.scatter(HoldOut_Test_X, HoldOut_Test_Y, color='orange', label='validation set')  # 데이터 위치를 점으로 표시
+    plt.scatter(HoldOut_Training_X, HoldOut_Training_Y, color='green', label='training set')  # 데이터 위치를 점으로 표시
+   
     plt.scatter(Model['X_data'], Model['Gaussian_func_Model'], s=3,label='k='+str(i)+',MSE='+str(Model['Test_Set_MSE']))  # 라벨에 K와 MSE를 표시
     plt.xlabel('age')
     plt.ylabel('tall')
