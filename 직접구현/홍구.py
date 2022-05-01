@@ -88,12 +88,13 @@ def Q6(N):  # n값에 따라 최적 매개변수를 자동으로 계산하는 �
         Phi_kk = np.c_[Phi_kk.T, O]  # 위에서 설정한 Phi_kk의 transpose와 상수 1 배열 결합
         Phi_random_kk = np.array(Phi_random_k)
         Phi_random_kk = np.c_[Phi_random_kk.T, O_2]  # 위에서 설정한 Phi_kk의 transpose와 상수 1 배열 결합
-        print(Phi_random_kk.shape)
+        #print(Phi_random_kk.shape)
 
         height_2 = training_k_height.reshape(20, 1)
 
         w = np.linalg.pinv(Phi_kk.T @ Phi_kk) @ Phi_kk.T @ height_2  # 다항 차원에서의 해석해 구하기
         w_list.append(w)
+        print(w_list)
         # print(Phi_random_kk.shape)
         # y_hat = Phi_random @ w_list[n]                                     #예측치 y_hat을 구하기 위해 가중치와 age의 최소~최대 값 사이의 랜덤 배열을 곱함
 
