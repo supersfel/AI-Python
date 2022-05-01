@@ -17,8 +17,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sklearn.model_selection
 import tensorflow as tf
-
 import keras_ocr
+#내가 추가함 // 메모리를 런타임에 해당하기 위함
+
+# config = tf.compat.v1.ConfigProto()
+# config.gpu_options.allow_growth = True
+# session = tf.compat.v1.Session(config=config)
+
+
 
 # dataset = keras_ocr.datasets.get_icdar_2013_detector_dataset(
 #     cache_dir='.',
