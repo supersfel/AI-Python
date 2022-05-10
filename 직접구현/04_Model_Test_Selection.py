@@ -6,7 +6,7 @@ raw_data = pd.read_csv('lin_regression_data_03.csv', names=['age', 'tall'])
 X = np.asarray(raw_data['age'].values.tolist())  # 나이 데이터(X)
 Y = np.asarray(raw_data['tall'].values.tolist())  # 키 데이터(Y)
 min_Xdata,max_Xdata = min(X),max(X)    #X데이터의 최소,최대 값 미리저장
-
+print(X,Y)
 plt.scatter(X, Y,label="infant's age and height data")  # 데이터 위치를 점으로 표시
 plt.xlabel('age[month]')
 plt.ylabel('height[cm]')
