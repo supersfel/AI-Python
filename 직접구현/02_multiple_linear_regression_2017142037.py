@@ -89,6 +89,9 @@ print('W0 =',Gradient_W[0],'W1 =',Gradient_W[1],'W2 =',Gradient_W[2])  #학습 �
 print('----------------')
 
 gradient_y = Gradient_W[0]*Height + Gradient_W[1]*Weight + Gradient_W[2]  #경사하강법으로 구한 W를 사용하여 구한 모델
+print(Gradient_W)
+print('------------')
+print(Height)
 fig = plt.figure()   #모델 출력
 ax = fig.add_subplot(projection='3d')
 ax.scatter(height,weight,age)
