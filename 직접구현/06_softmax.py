@@ -51,7 +51,8 @@ def Gradient_Descent(lr,W,epoch): #경사하강법 함수정의
         epochs.append(i)
         if i%1000==0: #2만번마다 정보 출력       
             print('-----------------------')
-            print('epoch:',i,'=====>','W :',W,', cee :',cee) 
+            print('epoch:',i,'=====>','W :',W,', cee :',cee)
+
        
             
     print('GD 종료') #종료 후 필요한 값들 딕셔너리로 반환

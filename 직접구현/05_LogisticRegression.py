@@ -55,7 +55,7 @@ def Gradient_Descent(lr,W,epoch): #경사하강법 함수정의
     print('GD 종료') #종료 후 필요한 값들 딕셔너리로 반환
     return {'Ws' : Ws, 'CEE' : Cees, 'EPOCHS' : epochs, 'W':W}
 
-result = Gradient_Descent(0.0005, [0,0], 250000)#경사하강법 실행
+result = Gradient_Descent(0.003, [0,0], 250000)#경사하강법 실행
 
 print('w0 =',result['W'][0],'w1 =',result['W'][1] )
 plt.plot(result['EPOCHS'],result['CEE'])#CEE출
