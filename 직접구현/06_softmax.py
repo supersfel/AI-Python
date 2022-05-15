@@ -10,13 +10,12 @@ N = len(X)
 Xn = np.c_[X,np.ones(N)].T   # X데이터 있는 배열 뒤에 1 붙이기 ( 나중에 w구해서 계산하기 위함 )
 
 Y = raw_data['variety'].to_numpy()
-for i in range(N):
+for i in range(N): #Versicolor 값을 1,0으로 설정
     if Y[i] == 'Versicolor':
         Y[i] = 1
     else:
         Y[i] = 0    
 Yn = Y.reshape(N,1)
-
 #---------------------------문제 1-----------------------------------
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')   # 3차원 그래프를 그리기 위함
@@ -52,9 +51,6 @@ def Gradient_Descent(lr,W,epoch): #경사하강법 함수정의
         if i%1000==0: #2만번마다 정보 출력       
             print('-----------------------')
             print('epoch:',i,'=====>','W :',W,', cee :',cee)
-
-       
-            
     print('GD 종료') #종료 후 필요한 값들 딕셔너리로 반환
     return {'Ws' : Ws, 'CEE' : Cees, 'EPOCHS' : epochs, 'W':W}
 
@@ -65,7 +61,7 @@ plt.xlabel('Epoch')
 plt.ylabel('CEE')
 plt.show()
 
-plt.plot(result['EPOCHS'],result['Ws'][0],label='W0')#W0,W1 출
+plt.plot(result['EPOCHS'],result['Ws'][0],label='W0')#W0,W1 출력
 plt.plot(result['EPOCHS'],result['Ws'][1],label='W1')
 plt.plot(result['EPOCHS'],result['Ws'][2],label='W2')
 plt.ylim([-4, 4])
@@ -73,7 +69,7 @@ plt.xlabel('Epoch')
 plt.ylabel('weight')
 plt.legend()
 plt.show()
-
+#---------------------------문제 3-----------------------------------
 x1_data = np.linspace(4.5,7.0,1000)   # 55 ~ 190을 1000개로 나눈 배열
 x2_data = np.linspace(1,5,1000)   # 10 ~ 100을 1000개로 나눈 배열
 X1_data,X2_data = np.meshgrid(x1_data,x2_data)
@@ -88,12 +84,18 @@ ax.set_ylabel('petal_length')
 ax.set_zlabel('variety')
 plt.show() 
 
-Pn = Logistic(result['W'] @ Xn) #예측 Pn생성
-cnt=0 #정확도 체크를 위한 cnt
-for i in range(N): #문턱값보다 크면1,작으면0
-    if Pn[i] > 0.5: Pn[i] = 1
-    else: Pn[i] = 0
-    if Pn[i] == Y[i]:
-        cnt += 1 #정답과 일치하면 정답처리
-accuracy = cnt / N #케이스중 정답케이스를 확률로 계
+def predict(sepal,petal,W): #predict함수 계싼
+    INPUT = np.array([sepal,petal,1]) #행렬계산을위한 데이터 가공
+    Pn = Logistic(W@INPUT)
+    if Pn > 0.5: Pn = 1
+    else: Pn = 0
+    return Pn
+cnt=0
+for i in range(N):
+    if predict(Xn[0][i],Xn[1][i],result['W']) == Y[i]:
+        cnt +=1
+accuracy = cnt / N #케이스중 정답케이스를 확률로 계산
 print('훈련결과 , 정확도 = ' , accuracy*100,"%",sep='')
+for i in np.random.randint(low=0,high=10,size=(20,2)):#임의의 값 예측
+    print(i,'값으로 예측 ====> :',end='')
+    print('Versicolor입니다' if predict(i[0],i[1],result['W']) else 'Setosa입니다')
