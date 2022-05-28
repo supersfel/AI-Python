@@ -89,7 +89,7 @@ ax.scatter(x0[600:],x1[600:],x2[600:])
 ax.set_xlabel('x0')
 ax.set_ylabel('x1')
 ax.set_zlabel('x2')
-plt.show()
+#plt.show()
 
 def one_hot_encoding(array,size):
     lst = [] #one_hot_encoding 과정
@@ -121,10 +121,13 @@ class Neural_Network: #2계층 신경망 구현
         INPUT_LAYER = perceptron(self.W0.T)
         OUTPUT_LAYER = perceptron(self.W1.T)
         sigmoid_input = sigmoid(INPUT_LAYER.output(x))
-        return softmax(OUTPUT_LAYER.output(sigmoid_input))
+        return sigmoid(OUTPUT_LAYER.output(sigmoid_input))
+
 
 Network = Neural_Network(hidden_layer_size=4,Input_size=3,Output_size=3)
 #은닉층 Node size, Input size , Output size 설정
 Network.Create_Weight_Matrix()
+
+
 for i in X:
     print('입력 :',i,'===> 출력 :',Network.predict(i))
