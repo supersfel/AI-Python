@@ -38,7 +38,7 @@ class perceptron: #perceptron 클래스 구현
     def __init__(self,w):
         self.w = w
     def output(self,x):
-        return np.dot(self.w,np.append(1,x))
+        return np.dot(np.append(1,x),self.w)
 
 def sigmoid(x):   #시그모이드 함수
     return 1/(1+np.exp(-x))
@@ -57,10 +57,10 @@ W2 = np.array([[0.1,0.2],[0.1,0.4],[0.2,0.5],[0.3,0.6]]) #ㅈ2
 Case=[0,0,0,0,0] #case들을 담을 저장공간 (index와맞춰줌)
 x = np.array([[1.0],[0.5]]) #입력값
 
-INPUT_LAYER = perceptron(W1.T) #은닉층
-OUTPUT_LAYER = perceptron(W2.T) #출력층
+INPUT_LAYER = perceptron(W1) #은닉층
+OUTPUT_LAYER = perceptron(W2) #출력층
 sigmoid_input = sigmoid(INPUT_LAYER.output(x)) #시그모이드 함수 은닉층
-Relu_input = Relu(INPUT_LAYER.output(x.T)) #Relu함수 은닉층
+Relu_input = Relu(INPUT_LAYER.output(x)) #Relu함수 은닉층
 
 Case[1] = OUTPUT_LAYER.output(sigmoid_input)
 Case[2] = softmax(Case[1])
@@ -118,8 +118,8 @@ class Neural_Network: #2계층 신경망 구현
         print('Input 속성 수 ====>',self.Input_size)
         print('Output 속성 수 ===>',self.Output_size)
     def predict(self,x): #y예측 함수
-        INPUT_LAYER = perceptron(self.W0.T)
-        OUTPUT_LAYER = perceptron(self.W1.T)
+        INPUT_LAYER = perceptron(self.W0)
+        OUTPUT_LAYER = perceptron(self.W1)
         sigmoid_input = sigmoid(INPUT_LAYER.output(x))
         return sigmoid(OUTPUT_LAYER.output(sigmoid_input))
 
