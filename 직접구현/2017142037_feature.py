@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from itertools import combinations
 import os
 
 
@@ -27,7 +26,7 @@ def one_hot_encoding(array, size):
 
 class Neural_Network:  # 2계층 신경망 구현
 
-    def __init__(self, hidden_layer_size, Input, Output, learning_rate):
+    def __init__(self, hidden_layer_size, Input, Output, learning_rate,Test_set):
         self.hidden_layer_size = hidden_layer_size  # 은닉층 노드 개수
         self.Input_size = Input.shape[1]  # 입력층 사이즈
         self.Output_size = Output.shape[1]  # 출력층 사이즈
@@ -35,6 +34,7 @@ class Neural_Network:  # 2계층 신경망 구현
         self.Y = Output  # 트레이닝 셋 출력(정답)
         self.learning_rate = learning_rate  # Learning rate
         self.Create_Weight_Matrix()  # W0,W1매트릭스 임의 생성
+        self.Test_set = Test_set  # 테스트셋 저장
 
     def Create_Weight_Matrix(self):  # Weight 를 만드는 함수
         self.W0 = np.random.randn(self.Input_size + 1, self.hidden_layer_size)
@@ -71,6 +71,7 @@ class Neural_Network:  # 2계층 신경망 구현
                     Etotal_w = Etotal_h_diff * h_z_diff * z_w_diff
                     self.W0[j][k] = self.W0[j][k] - lr * Etotal_w  # W0업데이트
 
+
             for j in range(self.hidden_layer_size + 1):  # 역전파 1단계
                 for k in range(self.Output_size):
                     E_o_diff = -2 * (self.Y[i][k] - Y_pred[k])
@@ -105,12 +106,23 @@ class Neural_Network:  # 2계층 신경망 구현
                 self.Accuaracys.append(Accuracy)
                 MSE = np.mean(tmp_mse)
                 self.MSEs.append(MSE)
-                print(f'EPOCH {i} ===> MSE : {MSE} , Accuracy : {Accuracy} ')
+
+                test_X, none, test_Y = np.hsplit(Test_set, (self.Input_size, self.Input_size))
+                cnt = 0
+                for j in range(len(test_X)):
+                    maxindex = np.argmax(self.predict(test_X[j]))
+                    tmp = np.array([0] * self.Output_size)
+                    tmp[maxindex] = 1
+                    if np.array_equal(tmp, test_Y[j]):
+                        cnt += 1
+                test_Accuracy = cnt / len(test_X)
+
+                print(f'EPOCH {i} ===> MSE : {MSE} , Accuracy : {Accuracy} ,Test_Accuracy : {test_Accuracy}')
 
                 df0 = pd.DataFrame(self.W0)
-                df0.to_csv(f'W\\{i}epoch_W0.csv',index=False)
+                df0.to_csv(f'W\\{i}epoch_W0.csv',index=False,header='None')
                 df1 = pd.DataFrame(self.W1)
-                df1.to_csv(f'W\\{i}epoch_W1.csv', index=False)
+                df1.to_csv(f'W\\{i}epoch_W1.csv', index=False,header='None')
 
 
 
@@ -188,7 +200,7 @@ def feature_8(input_data):
     return output_value
 
 def feature_9(input_data):
-    # 특징 후보 9번 : Anti-Diagonal 원소배열 추출 => 밀도함수로 변환 => 기댓값
+    # 특징 후보 9번 : Anti-Diagonal 원소배열 추출 => 밀도함수로 변환 => 분산
     input_data = np.diag(np.fliplr(input_data))
     S = sum(input_data)
     pdf = np.array([input_data[i] / S for i in range(len(input_data))])
@@ -221,10 +233,10 @@ for i in range(3):
         tmp_img = pd.read_csv(tmp_name,header=None).to_numpy(dtype='float32')
 
         x0 = feature[2](tmp_img)
-        x1 = feature[3](tmp_img)
-        x2 = feature[4](tmp_img)
+        x1 = feature[4](tmp_img)
+        x2 = feature[6](tmp_img)
         x3 = feature[7](tmp_img)
-        x4 = feature[10](tmp_img)
+        x4 = feature[9](tmp_img)
 
         X = np.array([[x0,x1,x2,x3,x4]],dtype='float32')
         Y = np.array([[0] * 3])
@@ -232,10 +244,20 @@ for i in range(3):
         Training_X = np.concatenate((Training_X,X),axis=0)
         Training_Y = np.concatenate((Training_Y,Y),axis=0)
 
-Network = Neural_Network(hidden_layer_size=5,Input=Training_X,Output=Training_Y,learning_rate=0.0003)
+
+Train_data = np.concatenate([Training_X,Training_Y],1)
+
+np.random.shuffle(Train_data)
+Traning_set = Train_data[:1200]
+Test_set = Train_data[1200:]
+X,none,Y = np.hsplit(Traning_set,(5,5))
+
+
+
+Network = Neural_Network(hidden_layer_size=4,Input=X,Output=Y,learning_rate=0.001,Test_set=Test_set)
 Network.Check_Input_Output_size()
 
-Network.train(50000)
+Network.train(5000)
 print('W0 :',Network.W0) #학습된 W0,W1 출력
 print('W1 :',Network.W1)
 
