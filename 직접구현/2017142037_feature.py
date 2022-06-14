@@ -2,20 +2,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-
-
 class perceptron:  # perceptron 클래스 구현
     def __init__(self, w):
         self.w = w
-
     def output(self, x):
         return np.dot(np.append(x, 1), self.w)
-
-
 def sigmoid(x):  # 시그모이드 함수
     return 1 / (1 + np.exp(-x))
-
-
 def one_hot_encoding(array, size):
     lst = []  # one_hot_encoding 과정
     for i in array:
@@ -23,9 +16,7 @@ def one_hot_encoding(array, size):
         tmp[i - 1] += 1
         lst.append(tmp)
     return np.array(lst)
-
 class Neural_Network:  # 2계층 신경망 구현
-
     def __init__(self, hidden_layer_size, Input, Output, learning_rate,Test_set):
         self.hidden_layer_size = hidden_layer_size  # 은닉층 노드 개수
         self.Input_size = Input.shape[1]  # 입력층 사이즈
@@ -119,10 +110,11 @@ class Neural_Network:  # 2계층 신경망 구현
 
                 print(f'EPOCH {i} ===> MSE : {MSE} , Accuracy : {Accuracy} ,Test_Accuracy : {test_Accuracy}')
 
-                df0 = pd.DataFrame(self.W0)
-                df0.to_csv(f'W\\{i}epoch_W0.csv',index=False,header='None')
-                df1 = pd.DataFrame(self.W1)
-                df1.to_csv(f'W\\{i}epoch_W1.csv', index=False,header='None')
+                # W 저장 ( W폴더를 하나 만들어야 저장이 가능함 )
+                # df0 = pd.DataFrame(self.W0)
+                # df0.to_csv(f'W\\{i}epoch_W0.csv',index=False,header='None')
+                # df1 = pd.DataFrame(self.W1)
+                # df1.to_csv(f'W\\{i}epoch_W1.csv', index=False,header='None')
 
 
 
@@ -218,12 +210,7 @@ def feature_10(input_data):
 
 feature = [0,feature_1,feature_2,feature_3,feature_4,feature_5,feature_6,feature_7,feature_8,feature_9,feature_10]
 
-# raw_data = pd.read_csv(f'[배포용] MINIST Data\\0_1.csv',encoding='utf-8', engine = 'python',header=None).to_numpy()
-# for i in range(1,11):
-#     print(i,':' , feature[i](raw_data))
-
-
-Training_X = np.array([],dtype='float32')
+Training_X = np.array([],dtype='float32')  #입력 데이터 가공
 Training_X=np.resize(Training_X,(0,5))
 Training_Y = np.array([],dtype='float32')
 Training_Y = np.resize(Training_X,(0,3))
@@ -243,25 +230,19 @@ for i in range(3):
         Y[0][i] = 1
         Training_X = np.concatenate((Training_X,X),axis=0)
         Training_Y = np.concatenate((Training_Y,Y),axis=0)
-
-
+#데이터 셔플 및 Train,Test set 구분
 Train_data = np.concatenate([Training_X,Training_Y],1)
-
 np.random.shuffle(Train_data)
 Traning_set = Train_data[:1200]
 Test_set = Train_data[1200:]
 X,none,Y = np.hsplit(Traning_set,(5,5))
 
-
-
-Network = Neural_Network(hidden_layer_size=4,Input=X,Output=Y,learning_rate=0.001,Test_set=Test_set)
+Network = Neural_Network(hidden_layer_size=4,Input=X,Output=Y,learning_rate=0.007,Test_set=Test_set)
 Network.Check_Input_Output_size()
 
 Network.train(5000)
 print('W0 :',Network.W0) #학습된 W0,W1 출력
 print('W1 :',Network.W1)
-
-
 
 plt.xlabel('Epoch')
 plt.ylabel("MSE")

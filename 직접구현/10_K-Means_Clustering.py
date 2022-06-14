@@ -56,12 +56,9 @@ class K_Means: #K-Means 알고리즘을 클래스로 구현
             for i in range(1,self.k+1):
                 Clusters[i] = np.array(Clusters[i])
                 self.standard[i-1] = Clusters[i].mean(axis=0)
-
             #cluster가 변화없어질때 종료조건을 넣을 수 있다.
             # if np.array_equal(Old_Cluster,self.Cluster):
             #     break
-
-
 
 Algorism = K_Means(k = 4,data = Customers_data,p=1) #모델 구현
 Algorism.Clustering()#Clustering 실행
@@ -70,7 +67,6 @@ Spending = [ [] for _ in range(Algorism.k+1)]
 for i in range(Algorism.N): #같은 군집끼리 값을 모은다
     Annual[Algorism.Cluster[i]].append(Annual_Income[i])
     Spending[Algorism.Cluster[i]].append(Spending_Score[i])
-
 for i in range(1,Algorism.k+1): # k개의 군집 출력
     plt.scatter(Annual[i], Spending[i],s=50,marker = 'o', label = f'cluster{i}')
     plt.scatter(Algorism.standard[i-1][2],Algorism.standard[i-1][3],label=f"{i}'s Centroids",marker='x')#중심점

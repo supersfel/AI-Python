@@ -26,7 +26,7 @@ ax.set_zlabel('variety')
 plt.show()   
 #---------------------------문제 2-----------------------------------
 def Cross_Entropy_Loss(Pn,Yn): #손실함수 정의
-    return np.mean((Yn * np.log(Pn+1e-7) + (1-Yn)*np.log(1-Pn+1e-7))) * (-1)
+    return np.sum((Yn * np.log(Pn+1e-7) + (1-Yn)*np.log(1-Pn+1e-7))) * (-1)
 def Logistic(X):   #로지스틱 함수    
     return 1 / (1 + np.exp(-X)) 
 def Gradient_Descent(lr,W,epoch): #경사하강법 함수정의  

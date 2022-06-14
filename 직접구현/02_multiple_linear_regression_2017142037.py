@@ -27,7 +27,7 @@ ax.set_zlabel('age')
 #------------------------------------------------------------------
 #                           실습2
 #------------------------------------------------------------------
-analytic_W = np.linalg.pinv(X.T @ X) @ X.T @ Y    # 해석해 구하는 식을 행렬계산으로 풀이
+analytic_W = np.linalg.pinv(X.T @ X) @ X.T @ Y    # W=((pi)T*(pi))^-1(pi)T*y
 height_data = np.linspace(55,190,1000)   # 55 ~ 190을 1000개로 나눈 배열
 weight_data = np.linspace(10,100,1000)   # 10 ~ 100을 1000개로 나눈 배열
 Height,Weight = np.meshgrid(height_data,weight_data)
@@ -67,7 +67,7 @@ def Gradient_Descent(lr,Gradient_W,epoch):    #경사하강법 함수 learning r
         error = y_pred - age      # 예측값과의 차이
 
         W0_diff = np.mean((height * error))    # 각 W들의 기울기 구하기
-        W1_diff = np.mean((weight * error).mean())
+        W1_diff = np.mean((weight * error))
         W2_diff = np.mean(error)
 
         Gradient_W[0] = Gradient_W[0] - lr * W0_diff    # W들 값 갱신
